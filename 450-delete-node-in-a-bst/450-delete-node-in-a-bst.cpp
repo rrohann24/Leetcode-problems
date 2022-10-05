@@ -13,47 +13,28 @@ class Solution {
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
         if(root==NULL) return NULL;
-        if(key>root->val){
-            TreeNode* temp = deleteNode(root->right,key);
-            root->right=temp;
-        }
-        else if(key<root->val){
-            TreeNode* temp = deleteNode(root->left,key);
-            root->left=temp;
-        }
-        else if(key==root->val){
-            if(root->left==NULL&& root->right==NULL){
-                delete root;
-                return NULL;
-            }
-            
-            //1 child
-             if(root->left!=NULL && root->right==NULL){
-                //left child is present
-                 TreeNode* temp= root->left;
-                 delete root;
-                 return temp;
-            }
-            
-            if(root->right!=NULL && root->left==NULL){
-                //right child is present
-                TreeNode* temp= root->right;
-                delete root;
-                return temp;
-            }
-            if(root->left!=NULL && root->right!=NULL){
-            TreeNode* temp = root->left;
-            //TreeNode* newLeft = temp;
-            while(temp->right!=NULL && temp->right->right!=NULL){
-                temp=temp->right;
-            }
-            int newRoot=temp->val;
-            if(temp->right!=NULL) newRoot = temp->right->val;
-            //temp->right=NULL;
-            root->val = newRoot;
-            //newR->right = root->right;
-            root->left = deleteNode(root->left,newRoot);
+        if(key<root->val){
+            root->left = deleteNode(root->left,key);
             return root;
+        }
+        if(key>root->val){
+            root->right = deleteNode(root->right,key);
+            return root;
+        }
+        if(key==root->val){
+            if(root->right==NULL){
+                return root->left;
+            }
+            else if(root->left==NULL){
+                return root->right;
+            }
+            else{
+                TreeNode* newR = root->right;
+                while(newR!=NULL && newR->left!=NULL){
+                    newR=newR->left;
+                }
+                root->val = newR->val;
+                root->right = deleteNode(root->right,newR->val);
             }
         }
         return root;
