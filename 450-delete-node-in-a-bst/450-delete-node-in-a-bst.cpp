@@ -30,7 +30,7 @@ public:
             }
             else{
                 TreeNode* newR = root->right;
-                while(newR!=NULL && newR->left!=NULL){
+                while(newR->left!=NULL){
                     newR=newR->left;
                 }
                 root->val = newR->val;
