@@ -22,10 +22,12 @@ public:
             for(int i=0; i<n; i++){
                 if(indeg[i]==0) q.push(i);
             }
-            vector<int> ans;
+            //vector<int> ans;
+            int cnt=0;
             while(!q.empty()){
                 int node = q.front();
-                ans.push_back(node);
+                //ans.push_back(node);
+                cnt++;
                 q.pop();
                 
                 for(auto it:adj[node]){
@@ -34,7 +36,7 @@ public:
                 }
                 
             }
-            if(ans.size()!=n) return 0;
+            if(cnt!=n) return 0;
             
             
             
