@@ -19,10 +19,10 @@ class Solution {
         int m = grid[0].size();
         vector<vector<int>> dis(n,vector<int>(m,1e9));
         dis[source.first][source.second]=0;
-        priority_queue<ppi,vector<ppi>,greater<ppi>> pq;
+        queue<ppi> pq;
         pq.push({source,0});
         while(!pq.empty()){
-            ppi front = pq.top();
+            ppi front = pq.front();
             pq.pop();
             int x = front.first.first;
             int y = front.first.second;
