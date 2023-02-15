@@ -25,13 +25,15 @@ class Solution {
             for(int i=0; i<arr.size(); i++){
                 int child = (node*arr[i])%100000;
                 if(dist+1<dis[child]){
+                    
                     dis[child] = dist+1;
+                    if(child==end) return dis[child];
                     pq.push({dist+1,child});
                 }
             }
         }
-        if(dis[end]==1e9) return -1;
-        return dis[end];
+     return -1;
+       // return dis[end];
         
     }
 };
