@@ -24,7 +24,7 @@ class Solution {
             //if(stops>k) continue; //
             
             for(auto iter : adj[node]){
-                if(dist+iter.second<dis[iter.first] && stops<=k){
+                if(dis[node]+iter.second<dis[iter.first] && stops<=k){
                     dis[iter.first]=dist+iter.second;
                     q.push({stops+1,{iter.first,dis[iter.first]}});
                 }
