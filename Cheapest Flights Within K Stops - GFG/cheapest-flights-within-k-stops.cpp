@@ -21,7 +21,7 @@ class Solution {
             int stops = it.first;
             int node = it.second.first;
             int dist = it.second.second;
-            if(stops>k) continue; //
+            //if(stops>k) continue; //
             
             for(auto iter : adj[node]){
                 if(dist+iter.second<dis[iter.first] && stops<=k){
