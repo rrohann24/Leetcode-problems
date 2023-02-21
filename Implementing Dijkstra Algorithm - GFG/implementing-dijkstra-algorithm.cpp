@@ -15,16 +15,16 @@ class Solution
         priority_queue<ppi,vector<ppi>,greater<ppi>> pq;
         vector<int> dis(V,INT_MAX);
         dis[s]=0;
-        pq.push({s,0});
+        pq.push({0,s});
         while(!pq.empty()){
             ppi front = pq.top();
             pq.pop();
-            int node = front.first;
-            int dist = front.second;
+            int node = front.second;
+            int dist = front.first;
             for(int i=0; i<adj[node].size();i++){
                 if(dist+adj[node][i][1]<dis[adj[node][i][0]]){
                     dis[adj[node][i][0]]=dist+adj[node][i][1];
-                    pq.push({adj[node][i][0],dis[adj[node][i][0]]});
+                    pq.push({dis[adj[node][i][0]],adj[node][i][0]});
                 }
             }
             
