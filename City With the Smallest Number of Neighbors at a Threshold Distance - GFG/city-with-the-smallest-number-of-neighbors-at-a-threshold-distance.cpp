@@ -8,39 +8,61 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
+    typedef pair<int,int> ppi;
+    void dij(vector<ppi> adj[],int s,int n,vector<vector<int>> &dist){
+        priority_queue<ppi,vector<ppi>,greater<ppi>> pq;
+        //vector<int> dist(n,1e9);
+        dist[s][s]=0;
+        pq.push({dist[s][s],s});
+        while(!pq.empty()){
+            ppi first = pq.top();
+            pq.pop();
+            int node = first.second;
+            int dis = first.first;
+            for(int i=0; i<adj[node].size();i++){
+                if(dis+adj[node][i].first<dist[s][adj[node][i].second]){
+                    dist[s][adj[node][i].second]=dis+adj[node][i].first;
+                    pq.push({dist[s][adj[node][i].second],adj[node][i].second});
+                }
+            }
+        }
+    }
     int findCity(int n, int m, vector<vector<int>>& edges,
                  int distanceThreshold) {
                      
-                     vector<vector<int>> dist(n,vector<int>(n,1e9));
+                     vector<ppi> adj[n];
                      
-                     for(auto it: edges){
-                         dist[it[0]][it[1]]=it[2];
-                         dist[it[1]][it[0]]=it[2];
-                     }
-                     for(int i=0; i<n; i++) dist[i][i]=0;
-                     for(int k=0; k<n; k++){
-                         for(int i=0; i<n; i++){
-                             for(int j=0; j<n; j++){
-                                 dist[i][j] = min(dist[i][j],dist[i][k]+dist[k][j]);
-                             }
-                         }
-                     }
+        for(int i=0; i<edges.size(); i++){
+            int n1 = edges[i][0];
+            int n2 = edges[i][1];
+            int dis = edges[i][2];
+            adj[n1].push_back({dis,n2});
+            adj[n2].push_back({dis,n1});
+        }
                      
-                     int cnt=n;
-                     int city = -1;
-                     for(int i=0; i<n; i++){
-                         int temp=0;
-                         for(int j=0; j<n; j++){
-                             if(dist[i][j]<=distanceThreshold) temp++;
-                         }
-                         if(temp<=cnt){
-                             cnt=temp;
-                             city=i;
-                         } 
-                     }
-                     return city;
+        vector<vector<int>> dist(n,vector<int>(n,1e9));             
                      
-                 }
+        for(int i=0; i<n; i++){
+            
+            dij(adj,i,n,dist);
+        }
+        int city=-1;
+        int cityCnt=n+1;
+        for(int i=0; i<n; i++){
+            int cnt=0;
+            for(int j=0; j<n; j++){
+                if(dist[i][j]<=distanceThreshold){
+                    cnt++;
+                }
+            }
+            if(cnt<=cityCnt){
+                    cityCnt = cnt;
+                    city=i;
+                }
+        }
+        return city;
+                     
+    }
 };
 
 
