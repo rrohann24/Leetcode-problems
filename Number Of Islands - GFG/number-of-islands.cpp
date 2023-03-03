@@ -75,7 +75,7 @@ class Solution {
                 ans.push_back(cnt);
                 continue;
             }
-            vis[x][y]=1;
+            vis[x][y]=1; 
             cnt++;
             int node = m*x + y;
             int dr[] = {-1,0,1,0};
