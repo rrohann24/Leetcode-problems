@@ -80,9 +80,9 @@ class Solution {
                     int adjC = j+dc[k];
                     if(isValid(adjR,adjC,n) && grid[adjR][adjC]==1){
                         int adjNode = n*adjR + adjC;
-                        if(ds.findUPar(node)!=ds.findUPar(adjNode)){
+                        //if(ds.findUPar(node)!=ds.findUPar(adjNode)){
                             ds.unionBySize(node,adjNode);
-                        }
+                        //}
                     }
                 }
             }
