@@ -23,7 +23,7 @@ class Solution {
             for(int j=0; j<V; j++){
                 if(adj[i][j]==1 && i!=j){
                     ad[i].push_back(j);
-                    //ad[j].push_back(i);
+                    ad[j].push_back(i);
                 }
             }
         }
