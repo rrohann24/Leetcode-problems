@@ -31,8 +31,9 @@ class Solution {
         vector<int> vis(V,0);
         for(int i=0; i<V; i++){
             if(!vis[i]){
-                cnt++;
+                
                 dfs(i,ad,V,vis);
+                cnt++;
             }
         }
         return cnt;
