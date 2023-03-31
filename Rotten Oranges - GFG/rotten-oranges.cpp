@@ -7,66 +7,57 @@ class Solution
 {
     public:
     //Function to find minimum time required to rot all oranges. 
+    bool isValid(int x, int y, int n, int m){
+        if(x>=0 && x<n && y>=0 && y<m) return true;
+        
+        return false;
+    }
     int orangesRotting(vector<vector<int>>& grid) {
         // Code here
+        
         int n = grid.size();
         int m = grid[0].size();
-        queue<pair<pair<int,int>,int>> q;
+        int fresh=0;
         vector<vector<int>> vis(n,vector<int>(m,0));
-        
-        int cntFresh=0;
+        queue<pair<pair<int,int>,int>> qu;
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
                 if(grid[i][j]==2){
-                    q.push({{i,j},0});
-                    vis[i][j]=2;
+                    vis[i][j]=1;
+                    qu.push({{i,j},0});
                 }
-                
                 if(grid[i][j]==1){
-                    cntFresh++;
+                    fresh++;
                 }
             }
         }
-        
-        
-        int res=-1;
-        //int timer=0;
+        int dx[] = {-1,1,0,0};
+        int dy[] = {0,0,-1,+1};
+        int res=INT_MIN;
         int cnt=0;
-        while(!q.empty()){
-            int i = q.front().first.first;
-            int j = q.front().first.second;
-            int tm = q.front().second;
-            q.pop();
-            if(i-1>=0 && grid[i-1][j]==1 && vis[i-1][j]==0){
-                vis[i-1][j]=2;
-                //vis[i-1][j]=1;
-                q.push({{i-1,j},tm+1});
-                cnt++;
+        while(!qu.empty()){
+            int x = qu.front().first.first;
+            int y = qu.front().first.second;
+            int tim = qu.front().second;
+            qu.pop();
+            res = max(res,tim);
+            
+            
+            for(int i=0; i<4; i++){
+                int Nrow = x + dx[i];
+                int Ncol = y + dy[i];
+                if(isValid(Nrow,Ncol,n,m) && grid[Nrow][Ncol]==1 && !vis[Nrow][Ncol]){
+                    qu.push({{Nrow,Ncol},tim+1});
+                    vis[Nrow][Ncol]=1;
+                    cnt++;
+                }
             }
-            if(i+1<n && grid[i+1][j]==1 && vis[i+1][j]==0){
-                //grid[i+1][j]=2;
-                vis[i+1][j]=2;
-                //timer++;
-                q.push({{i+1,j},tm+1});
-                cnt++;
-            }
-            if(j-1>=0 && grid[i][j-1]==1 && vis[i][j-1]==0){
-                //grid[i][j-1]=2;
-                vis[i][j-1]=2;
-                cnt++;
-                q.push({{i,j-1},tm+1});
-            }
-            if(j+1<m && grid[i][j+1]==1 && vis[i][j+1]==0){
-                //grid[i][j+1]=2;
-                vis[i][j+1]=2;
-                //timer++;
-                q.push({{i,j+1},tm+1});
-                cnt++;
-            }
-            res = max(res,tm);
+            
         }
-        if(cnt!=cntFresh) return -1;
-        return res;
+        if(fresh==cnt) return res;
+        return -1;
+        
+        
     }
 };
 
