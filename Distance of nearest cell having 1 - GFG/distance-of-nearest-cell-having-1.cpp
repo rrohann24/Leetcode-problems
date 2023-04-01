@@ -7,48 +7,46 @@ class Solution
 {
     public:
     //Function to find distance of nearest 1 in the grid for each cell.
-   
+    bool isValid(int x, int y, int n, int m){
+        if(x>=0 && y>=0 && x<n && y<m) return true;
+        
+        return false;
+    }
 	vector<vector<int>>nearest(vector<vector<int>>grid)
 	{
 	    // Code here
-	    
 	    int n = grid.size();
 	    int m = grid[0].size();
+	    
+	    vector<vector<int>> dis(n,vector<int>(m,1e9));
 	    queue<pair<pair<int,int>,int>> q;
-	    vector<vector<int>> vis(n,vector<int>(m,0));
-	    vector<vector<int>> dis(n,vector<int>(m,0));
 	    for(int i=0; i<n; i++){
 	        for(int j=0; j<m; j++){
 	            if(grid[i][j]==1){
+	                dis[i][j]=0;
 	                q.push({{i,j},0});
-	                vis[i][j]=1;
 	            }
 	        }
 	    }
+	    int dx[] = {-1,0,1,0};
+	    int dy[] = {0,1,0,-1};
 	    while(!q.empty()){
 	        int x = q.front().first.first;
 	        int y = q.front().first.second;
-	        int step = q.front().second;
+	        int dist = q.front().second;
 	        q.pop();
-	        dis[x][y]=step;
-	        if(x-1>=0 && vis[x-1][y]==0){
-	            vis[x-1][y]=1;
-	            q.push({{x-1,y},step+1});
+	        for(int i=0; i<4; i++){
+	            int Nrow = x+dx[i];
+	            int Ncol = y+dy[i];
+	            if(isValid(Nrow,Ncol,n,m) && dis[Nrow][Ncol]==1e9){
+	               dis[Nrow][Ncol] = dist+1;
+	               q.push({{Nrow,Ncol},dist+1});
+	            }
 	        }
-	        if(y-1>=0 && vis[x][y-1]==0){
-	            vis[x][y-1]=1;
-	            q.push({{x,y-1},step+1});
-	        }
-	        if(x+1<n && vis[x+1][y]==0){
-	            vis[x+1][y]=1;
-	            q.push({{x+1,y},step+1});
-	        }
-	        if(y+1<m && vis[x][y+1]==0){
-	            vis[x][y+1]=1;
-	            q.push({{x,y+1},step+1});
-	        }
+	        
 	    }
 	    return dis;
+	    
 	}
 };
 
