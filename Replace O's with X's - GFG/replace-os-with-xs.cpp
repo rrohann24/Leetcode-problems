@@ -9,58 +9,47 @@ using namespace std;
 
 class Solution{
 public:
-    void dfs(int x,int y, vector<vector<char>> mat,vector<vector<int>> &vis){
-        int n = mat.size();
-        int m = mat[0].size();
-        vis[x][y]=1;
-        //mat[x][y]='X';
-        
-        if(x-1>=0 && mat[x-1][y]=='O' && vis[x-1][y]==0){
-            dfs(x-1,y,mat,vis);
+bool isValid(int x, int y, int n, int m){
+    if(x>=0 && y>=0 && x<n && y<m) return true;
+    
+    return false;
+}
+void dfs(int x, int y, vector<vector<char>> &res,vector<vector<char>> mat,int dx[],int dy[],int n, int m){
+    res[x][y]='O';
+    
+    for(int i=0; i<4; i++){
+        int Nrow = x+dx[i];
+        int Ncol = y+dy[i];
+        if(isValid(Nrow,Ncol,n,m) && mat[Nrow][Ncol]=='O' && res[Nrow][Ncol]=='X'){
+            dfs(Nrow,Ncol,res,mat,dx,dy,n,m);
         }
-        if(y-1>=0 && mat[x][y-1]=='O' && vis[x][y-1]==0){
-            dfs(x,y-1,mat,vis);
-        }
-        if(x+1<n && mat[x+1][y]=='O' && vis[x+1][y]==0){
-            dfs(x+1,y,mat,vis);
-        }
-        if(y+1<m && mat[x][y+1]=='O' && vis[x][y+1]==0){
-            dfs(x,y+1,mat,vis);
-        }
-        
     }
+    
+}
     vector<vector<char>> fill(int n, int m, vector<vector<char>> mat)
     {
         // code here
-        vector<vector<int>> vis(n,vector<int>(m,0));
-        for(int i=0; i<m; i++){
-            if(mat[0][i]=='O' && vis[0][i]==0){
-                dfs(0,i,mat,vis);
-            }
-        }
+        vector<vector<char>> res(n,vector<char>(m,'X'));
+        int dx[] = {-1,0,1,0};
+        int dy[] = {0,1,0,-1};
         for(int i=0; i<n; i++){
-            if(mat[i][0]=='O' && vis[i][0]==0){
-                dfs(i,0,mat,vis);
+            if(mat[i][0]=='O' && res[i][0]=='X'){
+                dfs(i,0,res,mat,dx,dy,n,m);
+            }
+            if(mat[i][m-1]=='O' && res[i][m-1]=='X'){
+                dfs(i,m-1,res,mat,dx,dy,n,m);
             }
         }
         for(int i=0; i<m; i++){
-            if(mat[n-1][i]=='O' && vis[n-1][i]==0){
-                dfs(n-1,i,mat,vis);
+            if(mat[0][i]=='O' && res[0][i]=='X'){
+                dfs(0,i,res,mat,dx,dy,n,m);
+            }
+            if(mat[n-1][i]=='O' && res[n-1][i]=='X'){
+                dfs(n-1,i,res,mat,dx,dy,n,m);
             }
         }
-        for(int i=0; i<n; i++){
-            if(mat[i][m-1]=='O' && vis[i][m-1]==0){
-                dfs(i,m-1,mat,vis);
-            }
-        }
-        for(int i=1; i<n-1; i++){
-            for(int j=1; j<m-1; j++){
-                if(mat[i][j]=='O' && vis[i][j]==0){
-                    mat[i][j]='X';
-                }
-            }
-        }
-        return mat;
+        return res;
+        
     }
 };
 
