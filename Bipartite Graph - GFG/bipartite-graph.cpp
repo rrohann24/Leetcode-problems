@@ -1,60 +1,39 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 #include<bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
+// } Driver Code Ends
 class Solution {
 public:
-bool check(int i, vector<int> adj[], vector<int> &color){
-   if(color[i]==-1){
-       color[i]=1;
-   }
-   
-   
-   for(int j=0; j<adj[i].size(); j++){
-       if(color[adj[i][j]]==-1){
-           color[adj[i][j]]=1-color[i];
-           if(!check(adj[i][j],adj,color)) return false;
-       }
-       else if(color[adj[i][j]]==color[i]) return false;
-   }
-   return true;
+bool dfs(int node, vector<int>adj[], vector<int> &color, int pColor){
+    color[node] = 1-pColor;
     
-}
-bool check2(int start,vector<int>adj[],vector<int>& color){
-    if(color[start]==-1) color[start]=0;
-    queue<int> q;
-    q.push(start);
-    while(!q.empty()){
-        int node = q.front();
-        q.pop();
-        
-        for(auto it:adj[node]){
-            if(color[it]==-1){
-                color[it]=!color[node];
-                q.push(it);
-            }
-            else if(color[it]==color[node]) return false;
+    for(auto it: adj[node]){
+        if(color[it]!=-1){
+            if(color[it]==color[node]) return false;
         }
-        
+        else{
+            if(!dfs(it,adj,color,color[node])) return false;
+        }
     }
     return true;
+    
 }
 	bool isBipartite(int V, vector<int>adj[]){
 	    // Code here
 	    vector<int> color(V,-1);
+	    
 	    for(int i=0; i<V; i++){
 	        if(color[i]==-1){
-	        if(!check2(i,adj,color)) return false;
+	            if(!dfs(i,adj,color,0)) return false;
 	        }
 	    }
 	    return true;
-	    
 	}
 
 };
 
-// { Driver Code Starts.
+//{ Driver Code Starts.
 int main(){
 	int tc;
 	cin >> tc;
@@ -74,4 +53,5 @@ int main(){
 		else cout << "0\n";  
 	}
 	return 0;
-}  // } Driver Code Ends
+}
+// } Driver Code Ends
