@@ -9,25 +9,25 @@ public:
         // Code here
         queue<pair<string,int>> q;
         q.push({startWord,1});
-        unordered_set<string> st(wordList.begin(),wordList.end());
+        int n = startWord.size();
+        unordered_set<string> st(wordList.begin(), wordList.end());
         st.erase(startWord);
         while(!q.empty()){
-            string word = q.front().first;
-            int step = q.front().second;
+            string s = q.front().first;
+            int steps = q.front().second;
             q.pop();
-            if(word==targetWord) return step;
-            for(int i=0; i<word.size(); i++){
-                char ch = word[i];
-                for(char j='a'; j<='z'; j++){
-                    word[i]=j;
-                    if(st.find(word)!=st.end()){
-                        q.push({word,step+1});
-                        st.erase(word);
-                    }
-                }
-                word[i] = ch;
+            if(s==targetWord) return steps;
+            for(int i=0; i<n; i++){
+                 char curr = s[i];
+                 for(char ch= 'a'; ch<='z'; ch++){
+                     s[i] = ch;
+                     if(st.find(s)!=st.end()){
+                         q.push({s,steps+1});
+                         st.erase(s);
+                     }
+                     s[i]=curr;
+                 }
             }
-            
         }
         return 0;
     }
