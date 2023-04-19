@@ -3,7 +3,6 @@
 using namespace std;
 
 // } Driver Code Ends
-
 class Solution {
   public:
   typedef pair<int,int> ppi;
@@ -11,40 +10,42 @@ class Solution {
         // Code here
         vector<ppi> adj[n+1];
         for(int i=0; i<m; i++){
-            int n1 = edges[i][0];
-            int n2 = edges[i][1];
-            int dis = edges[i][2];
-            adj[n1].push_back({dis,n2});
-            adj[n2].push_back({dis,n1});
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int wt = edges[i][2];
+            adj[u].push_back({v,wt});
+            adj[v].push_back({u,wt});
         }
-        priority_queue<ppi,vector<ppi>, greater<ppi>> pq;
-        pq.push({0,1});    // {dist,node}
+        vector<int> dist(n+1,1e9);
         vector<int> par(n+1,-1);
-        vector<int> dis(n+1,1e9);
-        dis[1]=0;
+        priority_queue<ppi,vector<ppi>,greater<ppi>> pq;
+        pq.push({0,1}); //dis,node
+        dist[1]=0;
         while(!pq.empty()){
-            ppi top = pq.top();
+            ppi node = pq.top();
             pq.pop();
-            int node = top.second;
-            int dist = top.first;
-            for(int i=0; i<adj[node].size(); i++){
-                if(dist+adj[node][i].first<dis[adj[node][i].second]){
-                   dis[adj[node][i].second] = dist+adj[node][i].first;
-                   pq.push({dis[adj[node][i].second],adj[node][i].second});
-                   par[adj[node][i].second] = node;
+            int dis = node.first;
+            int currNode = node.second;
+            for(auto it: adj[currNode]){
+                int wt = it.second;
+                int adjNode = it.first;
+                if(dis + wt < dist[adjNode]){
+                    dist[adjNode] = dis+wt;
+                    pq.push({dis+wt,adjNode});
+                    par[adjNode] = currNode;
                 }
             }
         }
-        vector<int> ans;
-        int currNode = n;
-        while(par[currNode]!=-1){
-            ans.push_back(currNode);
-            currNode = par[currNode];
+        vector<int> res;
+        int node=n;
+        while(par[node]!=-1){
+            res.push_back(node);
+            node = par[node];
         }
-        if(currNode!=1) return {-1};
-        ans.push_back(currNode);
-        reverse(ans.begin(),ans.end());
-        return ans;
+        if(node!=1) return {-1};
+        res.push_back(node);
+        reverse(res.begin(),res.end());
+        return res;
     }
 };
 
