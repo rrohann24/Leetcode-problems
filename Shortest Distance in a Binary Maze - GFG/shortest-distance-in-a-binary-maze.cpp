@@ -21,14 +21,14 @@ class Solution {
         // code here
         int n = grid.size();
         int m = grid[0].size();
-        priority_queue<ppi,vector<ppi>,greater<ppi>> pq;
+        queue<ppi> pq;
         vector<vector<int>> dist(n,vector<int>(m,1e9));
         pq.push({0,source});
         dist[source.first][source.second]=0;
         int dx[] = {-1,0,1,0};
         int dy[] = {0,1,0,-1};
         while(!pq.empty()){
-            ppi top=pq.top();
+            ppi top=pq.front();
             pq.pop();
             int dis = top.first;
             int x = top.second.first;
