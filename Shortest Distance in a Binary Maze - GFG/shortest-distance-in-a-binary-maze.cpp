@@ -10,50 +10,40 @@ using namespace std;
 
 class Solution {
   public:
-  typedef pair<pair<int,int>,int> ppi;
+  typedef pair<int,pair<int,int>> ppi;
+  bool isValid(int x,int y, int n, int m){
+      if(x>=0 && x<n && y>=0 && y<m) return true;
+      
+      return false;
+  }
     int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
                      pair<int, int> destination) {
-                         
         // code here
         int n = grid.size();
         int m = grid[0].size();
-        vector<vector<int>> dis(n,vector<int>(m,1e9));
-        dis[source.first][source.second]=0;
-        queue<ppi> pq;
-        pq.push({source,0});
+        priority_queue<ppi,vector<ppi>,greater<ppi>> pq;
+        vector<vector<int>> dist(n,vector<int>(m,1e9));
+        pq.push({0,source});
+        dist[source.first][source.second]=0;
+        int dx[] = {-1,0,1,0};
+        int dy[] = {0,1,0,-1};
         while(!pq.empty()){
-            ppi front = pq.front();
+            ppi top=pq.top();
             pq.pop();
-            int x = front.first.first;
-            int y = front.first.second;
-            int dist =front.second;
-            if(x+1<n && grid[x+1][y]==1){
-                if(dis[x+1][y]>dist+1){
-                    dis[x+1][y]=dist+1;
-                    pq.push({{x+1,y},dist+1});
-                }
-            }
-            if(x-1>=0 && grid[x-1][y]==1){
-                if(dis[x-1][y]>dist+1){
-                    dis[x-1][y]=dist+1;
-                    pq.push({{x-1,y},dist+1});
-                }
-            }
-            if(y+1<m && grid[x][y+1]==1){
-                if(dis[x][y+1]>dist+1){
-                    dis[x][y+1]=dist+1;
-                    pq.push({{x,y+1},dist+1});
-                }
-            }
-            if(y-1>=0 && grid[x][y-1]==1){
-                if(dis[x][y-1]>dist+1){
-                    dis[x][y-1]=dist+1;
-                    pq.push({{x,y-1},dist+1});
+            int dis = top.first;
+            int x = top.second.first;
+            int y = top.second.second;
+            for(int i=0; i<4; i++){
+                if(isValid(x+dx[i],y+dy[i],n,m) && grid[x+dx[i]][y+dy[i]]==1){
+                    if(dis+1<dist[x+dx[i]][y+dy[i]]){
+                        dist[x+dx[i]][y+dy[i]]=dis+1;
+                        pq.push({dis+1,{x+dx[i],y+dy[i]}});
+                    }
                 }
             }
         }
-        if(dis[destination.first][destination.second]==1e9) return -1;
-        return dis[destination.first][destination.second];
+        if(dist[destination.first][destination.second]==1e9) return -1;
+        return dist[destination.first][destination.second];
     }
 };
 
