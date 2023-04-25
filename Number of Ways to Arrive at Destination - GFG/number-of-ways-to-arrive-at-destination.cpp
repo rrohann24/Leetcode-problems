@@ -39,7 +39,7 @@ class Solution {
                 if(dis+wt<dist[adjNode]){
                     dist[adjNode]=dis+wt;
                     pq.push({dis+wt,adjNode});
-                    ways[adjNode]+=ways[node];
+                    ways[adjNode]=ways[node];
                 }
                 else if(dis+wt==dist[adjNode]){
                     ways[adjNode]=(ways[adjNode]+ways[node])%mod;
