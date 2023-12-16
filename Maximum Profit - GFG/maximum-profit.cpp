@@ -22,10 +22,20 @@ class Solution {
         }
         
     }
-    int maxProfit(int K, int N, int A[]) {
+    int maxProfit(int K, int N, int a[]) {
         // code here
-        vector<vector<int>> dp(N+1,vector<int>(2*K+1,-1));
-        return solve(0,0,K,A,N,dp);
+        vector<vector<int>> dp(N+1,vector<int>(2*K+1,0));
+        for(int cnt=2*K-1; cnt>=0; cnt--){
+            for(int i=N-1; i>=0; i--){
+                if(cnt%2==0){
+            dp[i][cnt] = max(-a[i] + dp[i+1][cnt+1], dp[i+1][cnt]);
+        }
+        else{
+            dp[i][cnt] = max(a[i]+dp[i+1][cnt+1],dp[i+1][cnt]);
+        }
+            }
+        }
+        return dp[0][0];
     }
 };
 
