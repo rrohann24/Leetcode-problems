@@ -9,19 +9,19 @@ using namespace std;
 
 class Solution {
   public:
-    int solve(int i, int cnt, int k, int a[], int n,vector<vector<int>> &dp){
-        if(i==n || cnt>=2*k){
-            return 0;
-        }
-        if(dp[i][cnt]!=-1) return dp[i][cnt];
-        if(cnt%2==0){
-            return dp[i][cnt] = max(-a[i] + solve(i+1,cnt+1,k,a,n,dp), solve(i+1,cnt,k,a,n,dp));
-        }
-        else{
-            return dp[i][cnt] = max(a[i]+solve(i+1,cnt+1,k,a,n,dp),solve(i+1,cnt,k,a,n,dp));
-        }
+    // int solve(int i, int cnt, int k, int a[], int n,vector<vector<int>> &dp){
+    //     if(i==n || cnt>=2*k){
+    //         return 0;
+    //     }
+    //     if(dp[i][cnt]!=-1) return dp[i][cnt];
+    //     if(cnt%2==0){
+    //         return dp[i][cnt] = max(-a[i] + solve(i+1,cnt+1,k,a,n,dp), solve(i+1,cnt,k,a,n,dp));
+    //     }
+    //     else{
+    //         return dp[i][cnt] = max(a[i]+solve(i+1,cnt+1,k,a,n,dp),solve(i+1,cnt,k,a,n,dp));
+    //     }
         
-    }
+    // }
     int maxProfit(int K, int N, int a[]) {
         // code here
         vector<vector<int>> dp(N+1,vector<int>(2*K+1,0));
